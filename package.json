@@ -9,7 +9,9 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@element-plus/nuxt": "^1.0.5",
     "@nuxt/devtools": "latest",
+    "element-plus": "^2.3.12",
     "nuxt": "^3.7.0"
   }
 }
