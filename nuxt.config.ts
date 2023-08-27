@@ -14,32 +14,37 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/google-fonts',
     '@nuxtjs/fontaine',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/i18n'
   ],
 
   runtimeConfig: {
     datamallApiKey: process.env.NUXT_DATAMALL_API_KEY || ''
   },
 
-nitro: {
-  storage: {
-    cache: {
-      driver: 'cloudflare-kv-binding',
-      binding: 'KV_BUZZ'
+  nitro: {
+    storage: {
+      cache: {
+        driver: 'cloudflare-kv-binding',
+        binding: 'KV_BUZZ'
+      }
+    },
+    devStorage: {
+      cache: {
+        driver: 'fsLite',
+        base: './tmp'
+      }
     }
   },
-  devStorage: {
-    cache: {
-      driver: 'fsLite',
-      base: './tmp'
-    }
-  }
-},
 
   elementPlus: {
     themes: [
       'dark'
     ]
+  },
+
+  i18n: {
+    strategy: 'prefix',
   },
 
   googleFonts: {

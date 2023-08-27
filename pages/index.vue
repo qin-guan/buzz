@@ -1,9 +1,8 @@
 <script setup lang="ts">
-const colorMode = useColorMode()
+const { locale } =useI18n()
+const localePath = useLocalePath()
 
-function toggle() {
-  colorMode.preference = colorMode.value === 'light' ? 'dark' : 'light'
-}
+const colorMode = useColorMode()
 
 const { data } = useLazyFetch('/api/bus-stops')
 </script>
@@ -12,15 +11,21 @@ const { data } = useLazyFetch('/api/bus-stops')
   <ElContainer>
     <ElHeader>
       <div class="h-full flex items-center">
-        <NuxtLink to="/" class="font-semibold">
-          Buzz
+        <NuxtLink :to="localePath('/')" class="font-semibold">
+          {{ $t('appName') }}
         </NuxtLink>
       </div>
     </ElHeader>
     <ElMain>
-      <ElButton @click="toggle">
-        Toggle
-      </ElButton>
+      {{ locale }}
+      <ElSelect v-model="locale">
+        <ElOption value="en">English</ElOption>
+        <ElOption value="cn">中文</ElOption>
+      </ElSelect>
+      <ElSelect v-model="colorMode.preference">
+        <ElOption :label="$t('theme.light')" value="light">{{ $t('theme.light') }}</ElOption>
+        <ElOption :label="$t('theme.dark')" value="dark">{{ $t('theme.dark') }}</ElOption>
+      </ElSelect>
       <pre>{{ data }}</pre>
     </ElMain>
   </ElContainer>
