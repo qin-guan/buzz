@@ -15,11 +15,15 @@ type ResponseSchema = z.infer<typeof response>
 export default defineCachedEventHandler(async (event) => {
   const { datamallApiKey } = useRuntimeConfig()
 
-  return await $fetch<ResponseSchema>('http://datamall2.mytransport.sg/ltaodataservice/BusStops', {
-    headers: {
-      AccountKey: datamallApiKey
-    }
-  })
+  try {
+    return $fetch<ResponseSchema>('http://datamall2.mytransport.sg/ltaodataservice/BusStops', {
+      headers: {
+        AccountKey: datamallApiKey
+      }
+    })
+  } catch (e) {
+    console.error(e)
+  }
 }, {
   swr: true,
   maxAge: 60 * 60 * 24 * 7 // 1 week
