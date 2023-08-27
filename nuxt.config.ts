@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
-    datamallApiKey: process.env.DATAMALL_API_KEY || ''
+    datamallApiKey: process.env.NUXT_DATAMALL_API_KEY || ''
   },
 
 nitro: {
