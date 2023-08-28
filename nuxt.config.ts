@@ -27,13 +27,13 @@ export default defineNuxtConfig({
       cache: {
         driver: 'cloudflare-kv-binding',
         binding: 'KV_BUZZ'
-      }
+      },
     },
     devStorage: {
       cache: {
         driver: 'fsLite',
         base: './tmp'
-      }
+      },
     }
   },
 
