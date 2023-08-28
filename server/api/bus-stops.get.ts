@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import Fuse from 'fuse.js'
 
 const busStopSchema = z.object({
   BusStopCode: z.string(),
@@ -14,17 +13,15 @@ const responseSchema = z.object({
 })
 
 type ResponseSchema = z.infer<typeof responseSchema>
-type BusStopSchema = z.infer<typeof busStopSchema>
+export type BusStopSchema = z.infer<typeof busStopSchema>
 
-export default defineCachedEventHandler(async (event) => {
-  const storage = useStorage<BusStopSchema[]>('cache/bus-stops/all')
+export default defineCachedEventHandler(async () => {
+  const storage = useStorage<BusStopSchema[]>('cache/bus-stops')
   const { datamallApiKey } = useRuntimeConfig()
 
-  const query = await getQuery(event)
-
   try {
-    if (await storage.hasItem('data') && !query.name)
-      return await storage.getItem('data')
+    if (await storage.hasItem('all'))
+      return await storage.getItem('all')
 
     const data: BusStopSchema[] = []
 
@@ -44,30 +41,8 @@ export default defineCachedEventHandler(async (event) => {
         break
     }
 
-    await storage.setItem('data', data)
-    await storage.setMeta('data', { length: data.length })
-
-    if (query.name) {
-      const options = {
-        includeScore: true,
-        keys: ['BusStopCode', 'Description', 'RoadName'],
-      }
-      let queryIndex = await storage.getItem('data-fuse-index')
-      if (!queryIndex) {
-        // @ts-expect-error TODO remove after testing
-        queryIndex ??= Fuse.createIndex(options.keys, data)
-        // @ts-expect-error TODO remove after testing
-        await storage.setItem('data-fuse-index', queryIndex.toJSON())
-      }
-      else {
-        // @ts-expect-error TODO remove after testing
-        queryIndex = Fuse.parseIndex(queryIndex)
-      }
-
-      // @ts-expect-error TODO remove after testing
-      const fuse = new Fuse(data, options, queryIndex)
-      return fuse.search(query.name).map(({ item }) => item)
-    }
+    await storage.setItem('all', data)
+    await storage.setMeta('all', { length: data.length })
 
     return data
   }

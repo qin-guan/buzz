@@ -1,17 +1,7 @@
 <script setup lang="ts">
-import { RecycleScroller } from 'vue-virtual-scroller'
-import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
+import { useVirtualizer } from '@tanstack/vue-virtual'
 
 const localePath = useLocalePath()
-
-const search = ref('')
-
-const { data } = useLazyFetch('/api/bus-stops', {
-  query: {
-    name: search,
-  },
-  watch: [search],
-})
 </script>
 
 <template>
@@ -33,28 +23,7 @@ const { data } = useLazyFetch('/api/bus-stops', {
       </div>
     </ElHeader>
     <ElMain>
-      <div class="h-full">
-        <ElInput v-model="search" placeholder="Search..." />
-        <RecycleScroller
-          v-slot="{ item }"
-          class="h-full"
-          :items="data"
-          :item-size="138"
-          key-field="BusStopCode"
-        >
-          <ElCard class="h-[128px]">
-            <ElText size="small">
-              {{ item.BusStopCode }}
-            </ElText>
-            <br>
-            <ElText size="large" class="font-semibold">
-              {{ item.Description }}
-            </ElText>
-            <br>
-            <ElText>{{ item.RoadName }}</ElText>
-          </ElCard>
-        </RecycleScroller>
-      </div>
+      <BusStops />
     </ElMain>
   </ElContainer>
 </template>
