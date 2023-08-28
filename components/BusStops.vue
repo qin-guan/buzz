@@ -85,18 +85,16 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
               transform: `translateY(${item.start}px)`,
             }"
           >
-            <ElCard class="h-[128px] mr-1">
-              <ElText size="small">
-                {{ results[item.index].item.BusStopCode }}
-              </ElText>
-              <br>
-              <ElText size="large" class="font-semibold">
-                {{ results[item.index].item.Description }}
-              </ElText>
-              <br>
+            <ElCard class="h-[128px] mr-2">
+              <div class="flex justify-between">
+                <ElText size="large" class="font-semibold">
+                  {{ results[item.index].item.Description }}
+                </ElText>
+                <ElTag size="large">
+                  {{ results[item.index].item.BusStopCode }}
+                </ElTag>
+              </div>
               <ElText>{{ results[item.index].item.RoadName }}</ElText>
-              {{ results[item.index].item.Longitude }}
-              {{ results[item.index].item.Latitude }}
             </ElCard>
           </div>
         </div>
