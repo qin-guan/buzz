@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { locale } =useI18n()
+const { locale, setLocale } =useI18n()
 const localePath = useLocalePath()
 
 const colorMode = useColorMode()
@@ -18,9 +18,9 @@ const { data } = useLazyFetch('/api/bus-stops')
     </ElHeader>
     <ElMain>
       {{ locale }}
-      <ElSelect v-model="locale">
-        <ElOption value="en">English</ElOption>
-        <ElOption value="cn">中文</ElOption>
+      <ElSelect @update:model-value="(v) => setLocale(v)">
+        <ElOption value="en-GB">English</ElOption>
+        <ElOption value="zh-CN">中文</ElOption>
       </ElSelect>
       <ElSelect v-model="colorMode.preference">
         <ElOption :label="$t('theme.light')" value="light">{{ $t('theme.light') }}</ElOption>

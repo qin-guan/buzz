@@ -44,7 +44,9 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    strategy: 'prefix',
+    locales: ['en-GB', 'zh-CN'],
+    strategy: 'prefix_except_default',
+    defaultLocale: 'en-GB',
   },
 
   googleFonts: {

@@ -1,15 +1,15 @@
 export default defineI18nConfig(() => ({
   legacy: false,
-  locale: 'en',
+  locale: 'en-GB',
   messages: {
-    en: {
+    'en-GB': {
       appName: 'Buzz',
       theme: {
         light: 'Light',
         dark: 'Dark'
       }
     },
-    cn: {
+    'zh-CN': {
       appName: '巴士',
       theme: {
         light: '明亮模式',
