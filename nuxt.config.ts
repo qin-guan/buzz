@@ -1,9 +1,7 @@
-import defaultTheme from 'tailwindcss/defaultTheme'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   experimental: {
-    headNext: true
+    headNext: true,
   },
 
   devtools: { enabled: true },
@@ -16,44 +14,44 @@ export default defineNuxtConfig({
     '@nuxtjs/fontaine',
     '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
-    'nuxt-icon'
+    'nuxt-icon',
   ],
 
   runtimeConfig: {
-    datamallApiKey: process.env.NUXT_DATAMALL_API_KEY || ''
+    datamallApiKey: process.env.NUXT_DATAMALL_API_KEY || '',
   },
 
   nitro: {
     storage: {
       cache: {
         driver: 'cloudflare-kv-binding',
-        binding: 'KV_BUZZ'
+        binding: 'KV_BUZZ',
       },
     },
     devStorage: {
       cache: {
         driver: 'fsLite',
-        base: './tmp'
+        base: './tmp',
       },
-    }
+    },
   },
 
   elementPlus: {
     themes: [
-      'dark'
-    ]
+      'dark',
+    ],
   },
 
   i18n: {
     locales: [
       {
         code: 'en-GB',
-        name: 'English'
+        name: 'English',
       },
       {
         code: 'zh-CN',
-        name: 'Chinese'
-      }
+        name: '简体中文',
+      },
     ],
     strategy: 'prefix_except_default',
     defaultLocale: 'en-GB',
@@ -70,7 +68,7 @@ export default defineNuxtConfig({
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'Inter fallback', 'Helvetica Neue', "Helvetica Neue fallback", 'Helvetica', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'Arial', 'sans-serif'],
+            sans: ['Inter', 'Inter fallback', 'Helvetica Neue', 'Helvetica Neue fallback', 'Helvetica', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', 'Arial', 'sans-serif'],
           },
         },
       },
@@ -80,6 +78,6 @@ export default defineNuxtConfig({
   colorMode: {
     preference: 'system',
     fallback: 'dark',
-    classSuffix: ''
-  }
+    classSuffix: '',
+  },
 })

@@ -25,3 +25,6 @@ logs
 
 # Local cache
 tmp
+
+# ESLint
+.eslintcache
