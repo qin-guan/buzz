@@ -4,7 +4,7 @@ import Fuse from 'fuse.js'
 import { expose } from 'comlink'
 
 const options = {
-  keys: ['BusStopCode', 'Description', 'RoadName'],
+  keys: ['BusStopCode', 'Description', 'RoadName', 'Longitude', 'Latitude'],
   includeScore: true,
 }
 

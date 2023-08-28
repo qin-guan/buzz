@@ -2,7 +2,7 @@ import Fuse from 'fuse.js'
 import type { BusStopSchema } from './bus-stops.get'
 
 const options = {
-  keys: ['BusStopCode', 'Description', 'RoadName'],
+  keys: ['BusStopCode', 'Description', 'RoadName', 'Longitude', 'Latitude'],
 }
 
 export default defineCachedEventHandler(async () => {

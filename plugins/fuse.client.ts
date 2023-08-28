@@ -24,6 +24,8 @@ export default defineNuxtPlugin({
       provide: {
         fuse: {
           search: obj.search,
+          data,
+          index,
         },
       },
     }
