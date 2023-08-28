@@ -15,7 +15,8 @@ export default defineNuxtConfig({
     '@nuxtjs/google-fonts',
     '@nuxtjs/fontaine',
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/i18n'
+    '@nuxtjs/i18n',
+    'nuxt-icon'
   ],
 
   runtimeConfig: {
@@ -44,7 +45,16 @@ export default defineNuxtConfig({
   },
 
   i18n: {
-    locales: ['en-GB', 'zh-CN'],
+    locales: [
+      {
+        code: 'en-GB',
+        name: 'English'
+      },
+      {
+        code: 'zh-CN',
+        name: 'Chinese'
+      }
+    ],
     strategy: 'prefix_except_default',
     defaultLocale: 'en-GB',
   },
