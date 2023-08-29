@@ -1,63 +1,23 @@
-# Nuxt 3 Minimal Starter
+# Buzz
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Buzz (bus, *haha*) is a (soon to be) PWA that gets you bus arrival timings fast.
 
-## Setup
+It was mainly created because I could not find a bus app with the following requirements:
 
-Make sure to install the dependencies:
+* Ad-free
+* Supports Chinese (because not everyone understands English)
+* Has a decent elderly-friendly user interface
 
-```bash
-# npm
-npm install
+## Credits
 
-# pnpm
-pnpm install
+These apps were big sources of inspiration for Buzz:
 
-# yarn
-yarn install
-```
+* [BusRouter SG](https://busrouter.sg)
+* [MyTransport.SG](https://www.mytransport.sg)
+* NUS NextBus
 
-## Development Server
+## License
 
-Start the development server on `http://localhost:3000`:
+MIT
 
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Copyright (c) 2023-present, Qin Guan
