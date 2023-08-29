@@ -61,10 +61,7 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
 
 <template>
   <div class="h-full flex flex-col">
-    <ElInput v-model="search" size="large" :placeholder="$t('busStops.searchBar')" />
-
-    {{ coords.longitude }}
-    {{ coords.latitude }}
+    <ElInput v-model="search" clearable size="large" :placeholder="$t('busStops.searchBar')" />
 
     <div ref="scrollRef" class="overflow-auto h-full mt-4">
       <div
@@ -86,6 +83,9 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
             }"
           >
             <ElCard class="h-[128px] mr-2">
+              <ElText size="small">
+                {{ Math.round(results[item.index].dist * 1000) }}m
+              </ElText>
               <div class="flex justify-between">
                 <ElText size="large" class="font-semibold">
                   {{ results[item.index].item.Description }}
