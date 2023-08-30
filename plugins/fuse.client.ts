@@ -1,22 +1,17 @@
 import { wrap } from 'comlink'
 import FuseWorker from '~/assets/fuse-worker?worker'
+import type { FuseWorker as IFuseWorker } from '~/shared/types'
 
 export default defineNuxtPlugin({
   parallel: true,
   async setup() {
-    const [data, index] = await Promise.all([
-      $fetch('/api/bus-stops'),
-      $fetch('/api/bus-stops-fuse'),
-    ])
+    const { $data } = useNuxtApp()
 
     const worker = new FuseWorker()
-    const obj = wrap<{
-      init(data: any, index: any): void
-      search(query: string): any
-    }>(worker)
+    const obj = wrap<IFuseWorker>(worker)
 
     try {
-      await obj.init(data, index)
+      await obj.init($data.busStops, $data.busStopsIndex)
     }
     catch (e) { console.error(e) }
 
@@ -24,8 +19,6 @@ export default defineNuxtPlugin({
       provide: {
         fuse: {
           search: obj.search,
-          data,
-          index,
         },
       },
     }
