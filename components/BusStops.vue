@@ -9,7 +9,9 @@ const scrollRef = ref()
 const search = ref('')
 const searchThrottled = throttledRef(search, 200)
 
-const { coords, locatedAt, error, resume, pause } = useGeolocation()
+const { coords, locatedAt, error, resume, pause } = useGeolocation({
+  enableHighAccuracy: true
+})
 
 const results = computedAsync(async () => {
   if (process.server)
