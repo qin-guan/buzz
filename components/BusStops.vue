@@ -11,8 +11,6 @@ const searchThrottled = throttledRef(search, 200)
 
 const { coords, locatedAt, error, resume, pause } = useSharedGeolocation()
 
-useTest(1)
-
 const results = computedAsync(async () => {
   if (process.server)
     return []
