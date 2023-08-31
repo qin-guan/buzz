@@ -9,9 +9,9 @@ const scrollRef = ref()
 const search = ref('')
 const searchThrottled = throttledRef(search, 200)
 
-const { coords, locatedAt, error, resume, pause } = useGeolocation({
-  enableHighAccuracy: true
-})
+const { coords, locatedAt, error, resume, pause } = useSharedGeolocation()
+
+useTest(1)
 
 const results = computedAsync(async () => {
   if (process.server)
@@ -49,9 +49,13 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
 
 <template>
   <div class="h-full flex flex-col">
-    <ElInput v-model="search" clearable size="large" :placeholder="$t('busStops.searchBar')" />
+    <div class="mx-4">
+      <ElInput v-model="search" clearable size="large" :placeholder="$t('busStops.searchBar')" />
+    </div>
 
-    <div ref="scrollRef" class="overflow-auto h-full mt-4">
+    {{ locatedAt }}
+
+    <div ref="scrollRef" class="overflow-y-auto h-full pt-4">
       <div
         :style="{
           height: `${rowVirtualizer.getTotalSize()}px`,
@@ -70,7 +74,7 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
               transform: `translateY(${item.start}px)`,
             }"
           >
-            <ElCard class="h-[128px] mr-2">
+            <ElCard class="h-[128px] mx-4">
               <ElText size="small">
                 {{ Math.round(results[item.index].dist * 1000) }}m
               </ElText>
