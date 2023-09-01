@@ -1,6 +1,7 @@
 <script setup lang="ts">
-// TODO lots of StackOverflowed math, oh no
+import type Fuse from 'fuse.js'
 import { useVirtualizer } from '@tanstack/vue-virtual'
+import type { BusStopSchema } from '~/shared/types'
 
 const app = useNuxtApp()
 
@@ -11,33 +12,56 @@ const searchThrottled = throttledRef(search, 200)
 
 const { coords, locatedAt } = useSharedGeolocation()
 
-const results = computedAsync(async () => {
-  if (searchThrottled.value.length === 0 && !locatedAt.value) { // Initial load
-    return app.$data.busStops.map(i => ({ item: i }))
-  }
-
-  if (searchThrottled.value.length > 0) { // Manual search
-    return (await app.$fuse.search(searchThrottled.value))
-      .map(i => ({ ...i, distance: locatedAt.value ? getDistance(i.item.Latitude, i.item.Longitude, coords.value.latitude, coords.value.longitude) : 0 }))
-  }
-
-  if (locatedAt.value) { // No search, show within goelocation radius
-    return app.$data.busStops
-      .filter((x) => {
-        return isWithinRadius(x.Latitude, x.Longitude, coords.value.latitude, coords.value.longitude)
-      })
-      .map(i => ({ item: i, distance: getDistance(i.Latitude, i.Longitude, coords.value.latitude, coords.value.longitude) }))
-      .sort((a, b) => {
-        return a.distance - b.distance
-      })
-  }
-
+const defaultBusStops = computed(() => {
   return app.$data.busStops.map(i => ({ item: i }))
-}, app.$data.busStops.map(i => ({ item: i })))
+})
+
+const busStops = computedAsync<({
+  item: BusStopSchema
+  distance?: number
+})[]>(async () => {
+    if (searchThrottled.value.length > 0) { // Manual search
+      return (await app.$fuse.search(searchThrottled.value))
+        .map((i) => {
+          if (!locatedAt.value)
+            return i
+
+          return {
+            ...i,
+            distance: getDistance(
+              i.item.Latitude, i.item.Longitude,
+              coords.value.latitude, coords.value.longitude,
+            ),
+          }
+        })
+    }
+
+    if (locatedAt.value) { // No search, show within goelocation radius
+      return defaultBusStops.value
+        .filter(({ item }) => {
+          return isWithinRadius(
+            item.Latitude, item.Longitude,
+            coords.value.latitude, coords.value.longitude,
+          )
+        })
+        .map(i => ({
+          ...i,
+          distance: getDistance(
+            i.item.Latitude, i.item.Longitude,
+            coords.value.latitude, coords.value.longitude,
+          ),
+        }))
+        .sort((a, b) => {
+          return a.distance - b.distance
+        })
+    }
+
+    return defaultBusStops.value
+  }, defaultBusStops.value)
 
 const options = computed(() => {
   return {
-    count: results.value.length,
+    count: busStops.value.length,
     getScrollElement: () => scrollRef.value,
     estimateSize: () => 138,
     overscan: 20,
@@ -73,19 +97,24 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
               transform: `translateY(${item.start}px)`,
             }"
           >
-            <ElCard class="h-[128px] mx-4">
-              <ElText v-if="results[item.index].distance" size="small">
-                {{ Math.round(results[item.index].distance * 1000) }}m
-              </ElText>
-              <div class="flex justify-between">
-                <ElText size="large" class="font-semibold">
-                  {{ results[item.index].item.Description }}
+            <ElCard class="h-[128px] mx-4" body-class="flex justify-between">
+              <div>
+                <ElText v-if="busStops[item.index].distance" size="small">
+                  {{ Math.round(busStops[item.index].distance! * 1000) }}m
                 </ElText>
-                <ElTag size="large">
-                  {{ results[item.index].item.BusStopCode }}
+                <br>
+                <ElText size="large" class="font-semibold">
+                  {{ busStops[item.index].item.Description }}
+                </ElText>
+                <br>
+                <ElText>{{ busStops[item.index].item.RoadName }}</ElText>
+              </div>
+
+              <div>
+                <ElTag size="large" class="font-semibold">
+                  {{ busStops[item.index].item.BusStopCode }}
                 </ElTag>
               </div>
-              <ElText>{{ results[item.index].item.RoadName }}</ElText>
             </ElCard>
           </div>
         </div>
