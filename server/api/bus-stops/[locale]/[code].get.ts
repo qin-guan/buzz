@@ -40,6 +40,8 @@ export default defineCachedEventHandler(async (event) => {
 
   const config = useRuntimeConfig()
 
+  console.log(config.deeplApikey, bus.Description, localizationMap[locale])
+
   const translator = new deepl.Translator(config.deeplApikey)
 
   const result = await translator.translateText(bus?.Description, 'en', localizationMap[locale])
