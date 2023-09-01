@@ -39,7 +39,7 @@ export default defineCachedEventHandler(async (event) => {
 
   const config = useRuntimeConfig()
 
-  const { translations: [{ text }] } = await $fetch('https://api-free.deepl.com/v2/translate', {
+  const { translations: [{ text }] } = await $fetch('https://deepl-proxy.netlify.app/v2/translate', {
     method: 'POST',
     headers: {
       Authorization: `DeepL-Auth-Key ${config.deeplApikey}`,
