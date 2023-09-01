@@ -105,6 +105,7 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
                 <br>
                 <ElText size="large" class="font-semibold">
                   {{ busStops[item.index].item.Description }}
+                  <BusStopsTranslatedDescription :code="busStops[item.index].item.BusStopCode" />
                 </ElText>
                 <br>
                 <ElText>{{ busStops[item.index].item.RoadName }}</ElText>

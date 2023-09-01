@@ -24,6 +24,7 @@
     "@vueuse/core": "^10.4.0",
     "@vueuse/nuxt": "^10.4.0",
     "comlink": "^4.4.1",
+    "deepl-node": "^1.10.2",
     "element-plus": "^2.3.12",
     "eslint": "^8.48.0",
     "fuse.js": "^6.6.2",
