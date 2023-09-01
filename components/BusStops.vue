@@ -100,9 +100,9 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
             <ElCard class="h-[128px] mx-4" body-class="flex justify-between">
               <div>
                 <ElText v-if="busStops[item.index].distance" size="small">
-                  {{ Math.round(busStops[item.index].distance! * 1000) }}m
+                  {{ $t('busStops.distance', { distance: Math.round(busStops[item.index].distance! * 1000) }) }}
+                  <br>
                 </ElText>
-                <br>
                 <ElText size="large" class="font-semibold">
                   {{ busStops[item.index].item.Description }}
                   <BusStopsTranslatedDescription :code="busStops[item.index].item.BusStopCode" />
