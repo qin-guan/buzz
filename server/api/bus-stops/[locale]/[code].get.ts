@@ -1,7 +1,6 @@
-import * as deepl from 'deepl-node'
 import type { AllBusStopsStorageSchema } from '~/shared/types'
 
-const localizationMap: Record<string, deepl.TargetLanguageCode> = {
+const localizationMap: Record<string, string> = {
   'zh-CN': 'zh',
 }
 
@@ -40,14 +39,20 @@ export default defineCachedEventHandler(async (event) => {
 
   const config = useRuntimeConfig()
 
-  console.log(config.deeplApikey, bus.Description, localizationMap[locale])
+  const { translations: [{ text }] } = await $fetch('https://api-free.deepl.com/v2/translate', {
+    method: 'POST',
+    headers: {
+      Authorization: `DeepL-Auth-Key ${config.deeplApikey}`,
+    },
+    body: {
+      text: [bus.Description],
+      target_lang: localizationMap[locale],
+    },
+  })
 
-  const translator = new deepl.Translator(config.deeplApikey)
+  await storage.setItem(code, text)
 
-  const result = await translator.translateText(bus?.Description, 'en', localizationMap[locale])
-  await storage.setItem(code, result.text)
-
-  return result.text
+  return text
 }, {
   swr: true,
   maxAge: 60 * 60 * 24 * 7, // 1 week
