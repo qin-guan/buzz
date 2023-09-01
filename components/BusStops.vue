@@ -13,31 +13,37 @@ const { coords, locatedAt, error, resume, pause } = useSharedGeolocation()
 
 const results = computedAsync(async () => {
   if (process.server)
-    return []
+    return app.$data.busStops.map(i => ({ item: i }))
 
-  if (search.value.length === 0 && locatedAt && !error.value) {
+  if (searchThrottled.value.length === 0 && !locatedAt.value) { // Initial load
+    return app.$data.busStops.map(i => ({ item: i }))
+  }
+
+  if (searchThrottled.value.length > 0) { // Manual search
+    return (await app.$fuse.search(searchThrottled.value))
+      .map(i => ({ ...i, distance: locatedAt.value ? getDistance(i.item.Latitude, i.item.Longitude, coords.value.latitude, coords.value.longitude) : 0 }))
+  }
+
+  if (locatedAt.value) { // No search, show within goelocation radius
     return app.$data.busStops
       .filter((x) => {
         return isWithinRadius(x.Latitude, x.Longitude, coords.value.latitude, coords.value.longitude)
       })
-      .map(i => ({ item: i, dist: getDistance(i.Latitude, i.Longitude, coords.value.latitude, coords.value.longitude) }))
+      .map(i => ({ item: i, distance: getDistance(i.Latitude, i.Longitude, coords.value.latitude, coords.value.longitude) }))
       .sort((a, b) => {
-        return a.dist - b.dist
+        return a.distance - b.distance
       })
   }
 
-  if (search.value.length === 0)
-    return app.$data.busStops.map(i => ({ item: i }))
-
-  return (await app.$fuse.search(searchThrottled.value))
-    .map(i => ({ ...i, dist: getDistance(i.item.Latitude, i.item.Longitude, coords.value.latitude, coords.value.longitude) }))
-}, [])
+  return app.$data.busStops.map(i => ({ item: i }))
+}, app.$data.busStops.map(i => ({ item: i })))
 
 const options = computed(() => {
   return {
     count: results.value.length,
     getScrollElement: () => scrollRef.value,
     estimateSize: () => 138,
+    overscan: 20,
   }
 })
 
@@ -50,8 +56,6 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
     <div class="mx-4">
       <ElInput v-model="search" clearable size="large" :placeholder="$t('busStops.searchBar')" />
     </div>
-
-    {{ locatedAt }}
 
     <div ref="scrollRef" class="overflow-y-auto h-full pt-4">
       <div
@@ -73,8 +77,8 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
             }"
           >
             <ElCard class="h-[128px] mx-4">
-              <ElText size="small">
-                {{ Math.round(results[item.index].dist * 1000) }}m
+              <ElText v-if="results[item.index].distance" size="small">
+                {{ Math.round(results[item.index].distance * 1000) }}m
               </ElText>
               <div class="flex justify-between">
                 <ElText size="large" class="font-semibold">

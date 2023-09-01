@@ -1,1 +1,1 @@
-export const useSharedGeolocation = createSharedComposable(useGeolocation)
+export const useSharedGeolocation = createSharedComposable(() => useGeolocation())
