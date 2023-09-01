@@ -1,7 +1,5 @@
 <script setup lang="ts">
 const localePath = useLocalePath()
-
-const { locatedAt, error } = useSharedGeolocation()
 </script>
 
 <template>
@@ -11,8 +9,8 @@ const { locatedAt, error } = useSharedGeolocation()
     </NuxtLink>
 
     <div class="flex-1 flex justify-end space-x-4 items-center">
-      {{ locatedAt }}
-      <LocalizationDropdown />
+      <AppHeaderGeolocationDropdown />
+      <AppHeaderLocalizationDropdown />
       <ElButton circle @click="$colorMode.preference = $colorMode.value === 'dark' ? 'light' : 'dark'">
         <Icon v-if="$colorMode.unknown" name="lucide-smile" />
         <Icon v-else-if="$colorMode.value === 'dark'" name="lucide-sun" />

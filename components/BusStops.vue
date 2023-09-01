@@ -9,12 +9,9 @@ const scrollRef = ref()
 const search = ref('')
 const searchThrottled = throttledRef(search, 200)
 
-const { coords, locatedAt, error, resume, pause } = useSharedGeolocation()
+const { coords, locatedAt } = useSharedGeolocation()
 
 const results = computedAsync(async () => {
-  if (process.server)
-    return app.$data.busStops.map(i => ({ item: i }))
-
   if (searchThrottled.value.length === 0 && !locatedAt.value) { // Initial load
     return app.$data.busStops.map(i => ({ item: i }))
   }
