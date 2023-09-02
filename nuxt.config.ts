@@ -18,6 +18,7 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
+    deeplApikey: process.env.NUXT_DEEPL_API_KEY || '',
     datamallApiKey: process.env.NUXT_DATAMALL_API_KEY || '',
   },
 
