@@ -1,7 +1,7 @@
 import MiniSearch from 'minisearch'
 
 import { options } from '~/shared/minisearch'
-import type { BusStopSchema } from '~/shared/types'
+import type { BusStopSchema } from '~/shared/types/core'
 
 export default defineNuxtPlugin({
   parallel: true,

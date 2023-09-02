@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { SearchResult } from 'minisearch'
 import { searchOptions } from '~/shared/minisearch'
-import type { BusStopSchema } from '~/shared/types'
+import type { BusStopSchema } from '~/shared/types/core'
 
 const app = useNuxtApp()
 

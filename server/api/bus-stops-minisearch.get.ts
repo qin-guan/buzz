@@ -1,6 +1,6 @@
 import MiniSearch from 'minisearch'
 import { options } from '~/shared/minisearch'
-import type { AllBusStopsStorageSchema } from '~/shared/types'
+import type { AllBusStops } from '~/shared/types/storage'
 
 export default defineCachedEventHandler(async () => {
   const storage = useStorage('cache/bus-stops')
@@ -12,7 +12,7 @@ export default defineCachedEventHandler(async () => {
     if (!(await storage.hasItem('all'))) // Populate cache first
       await $fetch('/api/bus-stops')
 
-    const data = await storage.getItem<AllBusStopsStorageSchema>('all')
+    const data = await storage.getItem<AllBusStops>('all')
     if (!data) {
       throw createError({
         statusCode: 500,

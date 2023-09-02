@@ -1,17 +1,18 @@
-import type { AllBusStopsStorageSchema, DatamallBusStopQueryResponse } from '~/shared/types'
+import type { BusStopRespone } from '~/shared/types/datamall'
+import type { AllBusStops } from '~/shared/types/storage'
 
 export default defineCachedEventHandler(async () => {
-  const storage = useStorage<AllBusStopsStorageSchema>('cache/bus-stops')
+  const storage = useStorage<AllBusStops>('cache/bus-stops')
   const { datamallApiKey } = useRuntimeConfig()
 
   try {
     if (await storage.hasItem('all'))
       return await storage.getItem('all')
 
-    const data: AllBusStopsStorageSchema = []
+    const data: AllBusStops = []
 
     while (true) {
-      const { value } = await $fetch<DatamallBusStopQueryResponse>('http://datamall2.mytransport.sg/ltaodataservice/BusStops', {
+      const { value } = await $fetch<BusStopRespone>('http://datamall2.mytransport.sg/ltaodataservice/BusStops', {
         query: {
           $skip: data.length,
         },

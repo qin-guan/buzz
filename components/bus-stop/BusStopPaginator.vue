@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useVirtualizer } from '@tanstack/vue-virtual'
-import type { BusStopSchema } from '~/shared/types'
+import type { BusStopSchema } from '~/shared/types/core'
 
 interface BusStopWithDistance extends BusStopSchema {
   distance?: number

@@ -1,5 +1,5 @@
 import type { Options, SearchOptions } from 'minisearch'
-import type { BusStopSchema } from './types'
+import type { BusStopSchema } from './types/core'
 
 export const options: Options<BusStopSchema> = {
   idField: 'BusStopCode',
