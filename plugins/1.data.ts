@@ -2,11 +2,11 @@ export default defineNuxtPlugin({
   async setup() {
     const [busStops, busStopsIndex] = await Promise.all([
       $fetch('/api/bus-stops'),
-      $fetch('/api/bus-stops-fuse'),
+      $fetch('/api/bus-stops-minisearch'),
     ])
 
     if (!busStops || !busStopsIndex)
-      throw new Error('invariant')
+      throw new Error('[plugins/1.data.ts] invariant')
 
     return {
       provide: {

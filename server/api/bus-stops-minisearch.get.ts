@@ -1,13 +1,13 @@
-import Fuse from 'fuse.js'
-import { indexOptions } from '~/shared/fuse'
-import type { AllBusStopsStorageSchema, BusStopSchema } from '~/shared/types'
+import MiniSearch from 'minisearch'
+import { options } from '~/shared/minisearch'
+import type { AllBusStopsStorageSchema } from '~/shared/types'
 
 export default defineCachedEventHandler(async () => {
   const storage = useStorage('cache/bus-stops')
 
   try {
-    if (await storage.hasItem('fuse-index'))
-      return await storage.getItem<Fuse.FuseIndex<BusStopSchema>>('fuse-index')
+    if (await storage.hasItem('minisearch-index'))
+      return await storage.getItem<string>('minisearch-index')
 
     if (!(await storage.hasItem('all'))) // Populate cache first
       await $fetch('/api/bus-stops')
@@ -20,10 +20,14 @@ export default defineCachedEventHandler(async () => {
       })
     }
 
-    const dataIndex = Fuse.createIndex(indexOptions.keys, data)
-    await storage.setItem('fuse-index', dataIndex.toJSON())
+    const minisearch = new MiniSearch(options)
+    await minisearch.addAllAsync(data)
 
-    return dataIndex
+    const index = JSON.stringify(minisearch)
+
+    await storage.setItem('minisearch-index', index)
+
+    return index
   }
   catch (e) {
     console.error(e)

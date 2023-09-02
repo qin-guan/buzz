@@ -1,6 +1,10 @@
 import { z } from 'zod'
-import type Fuse from 'fuse.js'
 
+/**
+ * Bus stop schema used throughout the app.
+ *
+ * Modelled after the response from the Datamall API.
+ */
 const busStopSchema = z.object({
   BusStopCode: z.string(),
   RoadName: z.string(),
@@ -11,18 +15,18 @@ const busStopSchema = z.object({
 
 export type BusStopSchema = z.infer<typeof busStopSchema>
 
+/**
+ * Datamall bus stop query response schema.
+ */
 const datamallBusStopQueryResponse = z.object({
   value: z.array(busStopSchema),
 })
 
 export type DatamallBusStopQueryResponse = z.infer<typeof datamallBusStopQueryResponse>
 
+/**
+ * Schema used to store all bus stops in cache.
+ */
 const allBusStopsStorageSchema = z.array(busStopSchema)
 
 export type AllBusStopsStorageSchema = z.infer<typeof allBusStopsStorageSchema>
-
-export interface FuseWorker {
-  _fuse?: Fuse<BusStopSchema>
-  init(data: AllBusStopsStorageSchema, index: ReturnType<Fuse.FuseIndex<BusStopSchema>['toJSON']>): void
-  search(query: string, options?: Fuse.FuseSearchOptions): Fuse.FuseResult<BusStopSchema>[]
-}
