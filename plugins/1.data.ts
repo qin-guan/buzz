@@ -5,6 +5,8 @@ export default defineNuxtPlugin({
       $fetch('/api/bus-stops-minisearch'),
     ])
 
+    console.log('plugin', busStopsIndex)
+
     if (!busStops || !busStopsIndex)
       throw new Error('[plugins/1.data.ts] invariant')
 

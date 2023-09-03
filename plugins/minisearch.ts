@@ -8,6 +8,7 @@ export default defineNuxtPlugin({
   async setup() {
     const { $data } = useNuxtApp()
 
+    console.log('minisearch', $data.busStopsIndex)
     const minisearch: MiniSearch<BusStopSchema> = MiniSearch.loadJSON<BusStopSchema>($data.busStopsIndex, options)
 
     return {
