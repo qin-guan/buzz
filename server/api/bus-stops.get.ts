@@ -12,7 +12,7 @@ export default defineCachedEventHandler(async () => {
     const data: AllBusStops = []
 
     while (true) {
-      const { value } = await $fetch<BusStopRespone>('http://datamall2.mytransport.sg/ltaodataservice/BusStops', {
+      const { value } = await $fetch<BusStopRespone>('https://datamall-proxy.netlify.app/ltaodataservice/BusStops', {
         query: {
           $skip: data.length,
         },
