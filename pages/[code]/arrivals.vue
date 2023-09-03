@@ -16,7 +16,8 @@ const { data: stop, error, pending } = await useLazyFetch(`/api/bus-stops/${rout
           {{ $t('arrival.breadcrumb.busStop') }}
         </ElBreadcrumbItem>
         <ElBreadcrumbItem>
-          {{ stop.Description }}
+          {{ stop }}
+          {{ error }}
         </ElBreadcrumbItem>
       </ElBreadcrumb>
     </ElMain>
