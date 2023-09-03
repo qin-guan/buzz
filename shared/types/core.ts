@@ -14,3 +14,9 @@ export const busStopSchema = z.object({
 })
 
 export type BusStopSchema = z.infer<typeof busStopSchema>
+
+const metaSchema = z.object({
+  checksum: z.string(),
+})
+
+export type MetaSchema = z.infer<typeof metaSchema>

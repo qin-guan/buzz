@@ -1,8 +1,12 @@
 <script setup lang="ts">
+const { $data } = useNuxtApp()
+
 const localePath = useLocalePath()
 const route = useRoute()
 
-const { data: stop, error, pending } = await useLazyFetch(`/api/bus-stops/${route.params.code}`)
+const busStop = computed(() => {
+  return $data.busStops.find(i => i.BusStopCode === route.params.code)
+})
 </script>
 
 <template>
@@ -11,15 +15,17 @@ const { data: stop, error, pending } = await useLazyFetch(`/api/bus-stops/${rout
       <AppHeader />
     </ElHeader>
     <ElMain class="mx-4 my-4">
-      <ElBreadcrumb v-if="!pending" separator="/">
-        <ElBreadcrumbItem :to="{ path: localePath('/') }">
-          {{ $t('arrival.breadcrumb.busStop') }}
-        </ElBreadcrumbItem>
-        <ElBreadcrumbItem>
-          {{ stop }}
-          {{ error }}
-        </ElBreadcrumbItem>
-      </ElBreadcrumb>
+      <ElEmpty v-if="!busStop" description="Bus stop not found" />
+      <div v-else>
+        <ElBreadcrumb separator="/">
+          <ElBreadcrumbItem :to="{ path: localePath('/') }">
+            {{ $t('arrival.breadcrumb.busStop') }}
+          </ElBreadcrumbItem>
+          <ElBreadcrumbItem>
+            {{ busStop.Description }}
+          </ElBreadcrumbItem>
+        </ElBreadcrumb>
+      </div>
     </ElMain>
   </ElContainer>
 </template>
