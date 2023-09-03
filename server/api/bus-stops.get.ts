@@ -1,3 +1,4 @@
+import { subtle } from 'node:crypto'
 import type { BusStopRespone } from '~/shared/types/datamall'
 import type { AllBusStops } from '~/shared/types/storage'
 
@@ -28,7 +29,17 @@ export default defineCachedEventHandler(async () => {
     }
 
     await storage.setItem('all', data)
-    await storage.setMeta('all', { length: data.length })
+
+    const textBuffer = new TextEncoder().encode(JSON.stringify(data))
+    const hashBuffer = await subtle.digest('SHA-1', textBuffer)
+    const hashArray = Array.from(new Uint8Array(hashBuffer))
+    const hash = hashArray
+      .map(item => item.toString(16).padStart(2, '0'))
+      .join('')
+
+    await storage.setMeta('all', {
+      checksum: hash,
+    })
 
     return data
   }

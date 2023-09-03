@@ -5,10 +5,12 @@ const props = defineProps<{
   roadName: string
   busStopCode: string
 }>()
+
+const localePath = useLocalePath()
 </script>
 
 <template>
-  <NuxtLink :to="`/${props.busStopCode}/arrivals`">
+  <NuxtLink :to="localePath(`/${props.busStopCode}/arrivals`)">
     <ElCard class="h-[128px] mx-4" body-class="flex justify-between">
       <div>
         <ElText v-if="props.distance" size="small">

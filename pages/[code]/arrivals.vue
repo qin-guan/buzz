@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const localePath = useLocalePath()
 const route = useRoute()
 
 const { data: stop, error, pending } = await useLazyFetch(`/api/bus-stops/${route.params.code}`)
@@ -10,8 +11,8 @@ const { data: stop, error, pending } = await useLazyFetch(`/api/bus-stops/${rout
       <AppHeader />
     </ElHeader>
     <ElMain class="mx-4 my-4">
-      <ElBreadcrumb separator="/">
-        <ElBreadcrumbItem :to="{ path: '/' }">
+      <ElBreadcrumb v-if="!pending" separator="/">
+        <ElBreadcrumbItem :to="{ path: localePath('/') }">
           {{ $t('arrival.breadcrumb.busStop') }}
         </ElBreadcrumbItem>
         <ElBreadcrumbItem>
