@@ -66,7 +66,7 @@ function byDistance(a: BusStopWithDistance, b: BusStopWithDistance) {
 <template>
   <div class="h-full flex flex-col">
     <div class="mx-4">
-      <ElInput v-model="search" clearable size="large" :placeholder="$t('busStops.searchBar')" />
+      <ElInput v-model="search" clearable size="large" :placeholder="$t('busStop.searchBar')" />
     </div>
 
     <BusStopPaginator :bus-stops="busStops" />
