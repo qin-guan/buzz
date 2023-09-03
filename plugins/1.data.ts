@@ -2,7 +2,7 @@ export default defineNuxtPlugin({
   async setup() {
     const [busStops, busStopsIndex] = await Promise.all([
       $fetch('/api/bus-stops'),
-      $fetch('/api/bus-stops-minisearch'),
+      $fetch('/api/bus-stops-minisearch', { parseResponse: txt => txt }),
     ])
 
     if (!busStops || !busStopsIndex)
