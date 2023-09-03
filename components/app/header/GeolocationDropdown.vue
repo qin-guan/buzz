@@ -27,7 +27,7 @@ function handleCommand(cmd: 'enable' | 'disable') {
             <div class="flex space-x-4 items-center">
               <Icon name="lucide-locate" />
               <span>
-                Enable
+                {{ $t('appHeader.geolocation.enable') }}
               </span>
             </div>
           </ElDropdownItem>
@@ -35,7 +35,7 @@ function handleCommand(cmd: 'enable' | 'disable') {
             <div class="flex space-x-4 items-center">
               <Icon name="lucide-locate-off" />
               <span>
-                Disable
+                {{ $t('appHeader.geolocation.disable') }}
               </span>
             </div>
           </ElDropdownItem>
