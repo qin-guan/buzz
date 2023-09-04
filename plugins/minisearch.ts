@@ -1,11 +1,11 @@
-import MiniSearch from 'minisearch'
-
+import type MiniSearch from 'minisearch'
 import { options } from '~/shared/minisearch'
 import type { BusStopSchema } from '~/shared/types/core'
 
 export default defineNuxtPlugin({
   parallel: true,
   async setup() {
+    const { default: MiniSearch } = await import('minisearch')
     const { $data } = useNuxtApp()
 
     const minisearch: MiniSearch<BusStopSchema> = MiniSearch.loadJSON<BusStopSchema>($data.busStopsIndex, options)
