@@ -23,13 +23,13 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    // storage: {
-    //   cache: {
-    //     driver: 'cloudflare-kv-binding',
-    //     binding: 'KV_BUZZ',
-    //   },
-    // },
     storage: {
+      cache: {
+        driver: 'cloudflare-kv-binding',
+        binding: 'KV_BUZZ',
+      },
+    },
+    devStorage: {
       cache: {
         driver: 'fsLite',
         base: './tmp',
