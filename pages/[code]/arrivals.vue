@@ -1,14 +1,10 @@
 <script setup lang="ts">
 import { differenceInMinutes, parseISO } from 'date-fns'
 
-const { $data } = useNuxtApp()
-
 const localePath = useLocalePath()
 const route = useRoute()
 
-const busStop = computed(() => {
-  return $data.busStops.find(i => i.BusStopCode === route.params.code)
-})
+const { data: busStop } = useBusStop(route.params.code as string)
 
 const { data, refresh } = await useFetch(`/api/bus-stops/${route.params.code}/arrivals`)
 
