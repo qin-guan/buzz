@@ -12,7 +12,7 @@ const busStop = computed(() => {
 
 const { data, refresh } = await useFetch(`/api/bus-stops/${route.params.code}/arrivals`)
 
-useIntervalFn(refresh, 500)
+useIntervalFn(refresh, 2000)
 </script>
 
 <template>
