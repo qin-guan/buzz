@@ -1,17 +1,19 @@
-import MiniSearch from 'minisearch'
+// import * as MiniSearch from 'minisearch'
 import { useBusStopsIndex } from './data'
 import { options } from '~/shared/minisearch'
 import type { BusStopSchema } from '~/shared/types/core'
 
 export function useMiniSearch() {
-  const { data } = useBusStopsIndex()
+  return null
 
-  const minisearch = computed(() => {
-    if (!data.value)
-      return null
+  // const { data } = useBusStopsIndex()
 
-    return MiniSearch.loadJSON<BusStopSchema>(data.value ?? '', options)
-  })
+  // const minisearch = computed(() => {
+  //   if (!data.value)
+  //     return null
 
-  return minisearch
+  //   return loadJSON<BusStopSchema>(data.value ?? '', options)
+  // })
+
+  // return minisearch
 }
