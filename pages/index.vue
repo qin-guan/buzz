@@ -4,7 +4,7 @@
       <AppHeader />
     </ElHeader>
     <ElMain>
-      <!-- <BusStopSearch /> -->
+      <BusStopSearch />
     </ElMain>
   </ElContainer>
 </template>
