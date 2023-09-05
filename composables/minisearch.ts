@@ -1,5 +1,5 @@
 // import * as MiniSearch from 'minisearch'
-import { useBusStopsIndex } from './data'
+// import { useBusStopsIndex } from './data'
 import { options } from '~/shared/minisearch'
 import type { BusStopSchema } from '~/shared/types/core'
 
