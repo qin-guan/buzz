@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import differenceInMinutes from 'date-fns/differenceInMinutes/index.js'
-import parseISO from 'date-fns/parseISO/index.js'
-
-const { $data } = useNuxtApp()
+import differenceInMinutes from 'date-fns/differenceInMinutes/index'
+import parseISO from 'date-fns/parseISO/index'
 
 const localePath = useLocalePath()
 const route = useRoute()
 
-const busStop = computed(() => {
-  return $data.busStops.find(i => i.BusStopCode === route.params.code)
-})
+const h = useBusStop(route.params.code as string)
 
 const { data, refresh } = await useFetch(`/api/bus-stops/${route.params.code}/arrivals`)
+
+const busStop = h.data
 
 useIntervalFn(refresh, 2000)
 </script>
@@ -22,6 +20,7 @@ useIntervalFn(refresh, 2000)
       <AppHeader />
     </ElHeader>
     <ElMain class="mx-4 my-4">
+      {{ h }}
       <ElEmpty v-if="!busStop" description="Bus stop not found" />
       <div v-else class="flex flex-col space-y-10">
         <ElBreadcrumb separator="/">
