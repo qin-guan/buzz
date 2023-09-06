@@ -17,12 +17,12 @@ export default defineNuxtPlugin(async (nuxt) => {
   })
   const options: VueQueryPluginOptions = {
     queryClient,
-    // clientPersister: (queryClient) => {
-    //   return persistQueryClient({
-    //     queryClient,
-    //     persister: createSyncStoragePersister({ storage: process.client ? localStorage : undefined }),
-    //   })
-    // },
+    clientPersister: (queryClient) => {
+      return persistQueryClient({
+        queryClient,
+        persister: createSyncStoragePersister({ storage: process.client ? localStorage : undefined }),
+      })
+    },
   }
 
   nuxt.vueApp.use(VueQueryPlugin, options)
