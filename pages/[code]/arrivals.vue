@@ -2,11 +2,9 @@
 const localePath = useLocalePath()
 const route = useRoute()
 
-const h = useBusStop(route.params.code as string)
+const { data: busStop, isLoading: busStopIsLoading, error } = useBusStop(route.params.code as string)
 
 const { data, refresh } = await useFetch(`/api/bus-stops/${route.params.code}/arrivals`)
-
-const busStop = h.data
 
 useIntervalFn(refresh, 2000)
 </script>
@@ -17,8 +15,13 @@ useIntervalFn(refresh, 2000)
       <AppHeader />
     </ElHeader>
     <ElMain class="mx-4 my-4">
-      {{ h }}
-      <ElEmpty v-if="!busStop" description="Bus stop not found" />
+      {{ busStopIsLoading }}
+      <div v-if="busStopIsLoading">
+        <ElSkeleton />
+      </div>
+      <div v-else-if="!busStop">
+        <ElEmpty description="Bus stop not found" />
+      </div>
       <div v-else class="flex flex-col space-y-10">
         <ElBreadcrumb separator="/">
           <ElBreadcrumbItem :to="{ path: localePath('/') }">
@@ -30,7 +33,7 @@ useIntervalFn(refresh, 2000)
         </ElBreadcrumb>
 
         <h2>Bus Services</h2>
-        <ElButton @click="refresh">
+        <ElButton @click="refresh()">
           Refresh
         </ElButton>
         <div v-for="service in data?.Services" :key="service?.ServiceNo" class="flex">

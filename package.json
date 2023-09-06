@@ -20,6 +20,8 @@
     "@nuxtjs/google-fonts": "^3.0.2",
     "@nuxtjs/i18n": "8.0.0-rc.3",
     "@nuxtjs/tailwindcss": "^6.8.0",
+    "@tanstack/query-persist-client-core": "^4.33.0",
+    "@tanstack/query-sync-storage-persister": "^4.33.0",
     "@tanstack/vue-query": "^4.34.4",
     "@tanstack/vue-virtual": "3.0.0-beta.54",
     "@vueuse/core": "^10.4.0",

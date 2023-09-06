@@ -32,7 +32,7 @@ export default defineNuxtConfig({
     devStorage: {
       cache: {
         driver: 'fsLite',
-        base: './tmp',
+        base: '.nuxt/cache',
       },
     },
   },

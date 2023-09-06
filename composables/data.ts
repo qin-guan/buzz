@@ -1,23 +1,21 @@
 import { useQuery } from '@tanstack/vue-query'
-import type { BusStopSchema } from '~/shared/types/core'
 
 export function useBusStops() {
-  return useQuery(['bus-stops'], async () => {
-    return JSON.parse(localStorage.getItem('bus-stops') ?? 'null') as BusStopSchema[]
-  })
+  return useQuery(['bus-stops'], () => $fetch('/api/bus-stops'))
 }
 
 export function useBusStop(code: string) {
-  const { data } = useBusStops()
+  const { data: busStops } = useBusStops()
+  const enabled = computed(() => !!busStops.value)
   return useQuery(['bus-stops', code], () => {
-    return data.value?.find(busStop => busStop.BusStopCode === code)
+    return busStops.value!.find(busStop => busStop.BusStopCode === code)
   }, {
-    enabled: !!data.value,
+    enabled,
   })
 }
 
 export function useBusStopsIndex() {
-  return useQuery(['bus-stops-index'], async () => {
-    return localStorage.getItem('bus-stops-index') ?? null
+  return useQuery(['bus-stops-index'], () => {
+    return $fetch('/api/bus-stops-minisearch', { parseResponse: txt => txt })
   })
 }

@@ -1,13 +1,14 @@
 export default defineNuxtPlugin({
   parallel: true,
   async setup() {
-    const dayjs = await import('dayjs')
-    const relativeTime = await import('dayjs/plugin/relativeTime')
+    const { default: dayjs } = await import('dayjs')
+    const { default: relativeTime } =  await import('dayjs/plugin/relativeTime')
 
-    dayjs.default.extend(relativeTime.default)
+    dayjs.extend(relativeTime)
+
     return {
       provide: {
-        dayjs: dayjs.default
+        dayjs
       }
     }
   }

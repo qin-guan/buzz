@@ -27,7 +27,10 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
 
 <template>
   <div ref="scrollRef" class="overflow-y-auto h-full pt-4">
-    <LazyElEmpty v-if="props.busStops.length === 0" :description="$t('busStop.empty')" />
+    <div v-if="props.busStops.length === 0">
+      <LazyElEmpty :description="$t('busStop.empty')" />
+    </div>
+
     <div
       v-else
       :style="{
