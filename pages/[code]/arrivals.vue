@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import differenceInMinutes from 'date-fns/differenceInMinutes/index'
-import parseISO from 'date-fns/parseISO/index'
-
 const localePath = useLocalePath()
 const route = useRoute()
 
@@ -46,13 +43,13 @@ useIntervalFn(refresh, 2000)
           </div>
           <div class="flex flex-col">
             <span>
-              In {{ differenceInMinutes(parseISO(service?.NextBus?.EstimatedArrival!), new Date()) }}m
+              In {{ $dayjs(service?.NextBus?.EstimatedArrival!).toNow() }}
             </span>
             <span>
-              In {{ differenceInMinutes(parseISO(service?.NextBus2?.EstimatedArrival!), new Date()) }}m
+              In {{ $dayjs(service?.NextBus2?.EstimatedArrival!).toNow() }}
             </span>
             <span>
-              In {{ differenceInMinutes(parseISO(service?.NextBus3?.EstimatedArrival!), new Date()) }}m
+              In {{ $dayjs(service?.NextBus3?.EstimatedArrival!).toNow() }}
             </span>
           </div>
         </div>
