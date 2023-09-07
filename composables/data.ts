@@ -1,21 +1,29 @@
+import type { UseQueryOptions } from '@tanstack/vue-query'
 import { useQuery } from '@tanstack/vue-query'
 
 export function useBusStops() {
-  return useQuery(['bus-stops'], () => $fetch('/api/bus-stops'))
+  return useQuery({
+    queryKey: ['bus-stops'],
+    queryFn: () => $fetch('/api/bus-stops'),
+  })
 }
 
-export function useBusStop(code: string) {
+export function useBusStop(code: string, enabled?: Ref<boolean>) {
   const { data: busStops } = useBusStops()
-  const enabled = computed(() => !!busStops.value)
-  return useQuery(['bus-stops', code], () => {
-    return busStops.value!.find(busStop => busStop.BusStopCode === code)
-  }, {
+
+  if (busStops.value === undefined)
+    console.warn('[composables/data.ts] useBusStop() called before busStops are loaded.')
+
+  return useQuery({
+    queryKey: ['bus-stops', code],
+    queryFn: () => busStops.value!.find(busStop => busStop.BusStopCode === code),
     enabled,
   })
 }
 
 export function useBusStopsIndex() {
-  return useQuery(['bus-stops-index'], () => {
-    return $fetch('/api/bus-stops-minisearch', { parseResponse: txt => txt })
+  return useQuery({
+    queryKey: ['bus-stops-index'],
+    queryFn: () => $fetch('/api/bus-stops-minisearch', { parseResponse: txt => txt }),
   })
 }

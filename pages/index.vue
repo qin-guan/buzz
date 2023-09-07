@@ -4,14 +4,7 @@
       <AppHeader />
     </ElHeader>
     <ElMain>
-      <ClientOnly>
-        <Suspense>
-          <template #fallback>
-            <div>hello!</div>
-          </template>
-          <BusStopSearch />
-        </Suspense>
-      </ClientOnly>
+      <BusStopSearch />
     </ElMain>
   </ElContainer>
 </template>

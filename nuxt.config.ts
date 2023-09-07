@@ -4,6 +4,8 @@ export default defineNuxtConfig({
     headNext: true,
   },
 
+  ssr: false,
+
   devtools: { enabled: true },
 
   modules: [

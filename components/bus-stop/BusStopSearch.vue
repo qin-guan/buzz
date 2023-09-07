@@ -4,8 +4,6 @@ import type { BusStopSchema } from '~/shared/types/core'
 import { searchOptions } from '~/shared/minisearch'
 
 const { data: _busStops, isLoading, suspense } = useBusStops()
-await suspense()
-await new Promise(r => setTimeout(r, 10000))
 
 const minisearch = useMiniSearch()
 

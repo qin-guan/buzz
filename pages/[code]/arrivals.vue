@@ -2,11 +2,13 @@
 const localePath = useLocalePath()
 const route = useRoute()
 
-const { data: busStop, isLoading: busStopIsLoading, error } = useBusStop(route.params.code as string)
+const { data: busStops } = useBusStops()
+const enabled = computed(() => !!busStops.value)
+const { data: busStop, isLoading: busStopIsLoading, error } = useBusStop(route.params.code as string, enabled)
 
 const { data, refresh } = await useFetch(`/api/bus-stops/${route.params.code}/arrivals`)
 
-useIntervalFn(refresh, 2000)
+// useIntervalFn(refresh, 2000)
 </script>
 
 <template>
@@ -15,13 +17,16 @@ useIntervalFn(refresh, 2000)
       <AppHeader />
     </ElHeader>
     <ElMain class="mx-4 my-4">
+      <span>enabled {{ enabled }}</span>
       {{ busStopIsLoading }}
       <div v-if="busStopIsLoading">
         <ElSkeleton />
       </div>
+
       <div v-else-if="!busStop">
         <ElEmpty description="Bus stop not found" />
       </div>
+
       <div v-else class="flex flex-col space-y-10">
         <ElBreadcrumb separator="/">
           <ElBreadcrumbItem :to="{ path: localePath('/') }">
