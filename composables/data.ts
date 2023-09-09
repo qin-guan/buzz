@@ -1,29 +1,23 @@
-import type { UseQueryOptions } from '@tanstack/vue-query'
-import { useQuery } from '@tanstack/vue-query'
-
 export function useBusStops() {
-  return useQuery({
-    queryKey: ['bus-stops'],
-    queryFn: () => $fetch('/api/bus-stops'),
-  })
+  return useFetch('/api/bus-stops', { key: 'bus-stops', lazy: true })
 }
 
-export function useBusStop(code: string, enabled?: Ref<boolean>) {
-  const { data: busStops } = useBusStops()
+export function useBusStop(code: MaybeRef<string>) {
+  const watch = isRef(code) ? [code] : undefined
 
-  if (busStops.value === undefined)
-    console.warn('[composables/data.ts] useBusStop() called before busStops are loaded.')
+  return useAsyncData(`bus-stops:${unref(code)}`, async () => {
+    const { data: busStops, error } = await useBusStops()
+    if (error.value)
+      throw error.value
+    return busStops.value!.find(busStop => busStop.BusStopCode === code)
+  }, { watch, lazy: true })
+}
 
-  return useQuery({
-    queryKey: ['bus-stops', code],
-    queryFn: () => busStops.value!.find(busStop => busStop.BusStopCode === code),
-    enabled,
-  })
+export function useBusStopArrivals(code: MaybeRef<string>) {
+  const watch = isRef(code) ? [code] : undefined
+  return useFetch(`/api/bus-stops/${unref(code)}/arrivals`, { watch, key: `bus-stops:${unref(code)}:arrivals`, lazy: true })
 }
 
 export function useBusStopsIndex() {
-  return useQuery({
-    queryKey: ['bus-stops-index'],
-    queryFn: () => $fetch('/api/bus-stops-minisearch', { parseResponse: txt => txt }),
-  })
+  return useFetch('/api/bus-stops-minisearch', { parseResponse: txt => txt, lazy: true })
 }

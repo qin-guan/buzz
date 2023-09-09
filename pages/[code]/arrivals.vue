@@ -2,13 +2,11 @@
 const localePath = useLocalePath()
 const route = useRoute()
 
-const { data: busStops } = useBusStops()
-const enabled = computed(() => !!busStops.value)
-const { data: busStop, isLoading: busStopIsLoading, error } = useBusStop(route.params.code as string, enabled)
+const { data: busStop, pending: busStopPending, error } = await useBusStop(route.params.code as string)
 
-const { data, refresh } = await useFetch(`/api/bus-stops/${route.params.code}/arrivals`)
+const { data, refresh } = await useBusStopArrivals(route.params.code as string)
 
-// useIntervalFn(refresh, 2000)
+useIntervalFn(refresh, 2000)
 </script>
 
 <template>
@@ -17,9 +15,8 @@ const { data, refresh } = await useFetch(`/api/bus-stops/${route.params.code}/ar
       <AppHeader />
     </ElHeader>
     <ElMain class="mx-4 my-4">
-      <span>enabled {{ enabled }}</span>
-      {{ busStopIsLoading }}
-      <div v-if="busStopIsLoading">
+      {{ busStopPending }}
+      <div v-if="busStopPending">
         <ElSkeleton />
       </div>
 
