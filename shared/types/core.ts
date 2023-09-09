@@ -20,3 +20,17 @@ const metaSchema = z.object({
 })
 
 export type MetaSchema = z.infer<typeof metaSchema>
+
+export const nextBusSchema = z.object({
+  ServiceNo: z.string(),
+  DestinationCode: z.string(),
+  EstimatedArrival: z.string().datetime(),
+  Latitude: z.string(),
+  Longitude: z.string(),
+  VisitNumber: z.number(),
+  Load: z.enum(['SEA', 'SDA', 'LSD']),
+  Feature: z.enum(['WAB', '']),
+  Type: z.enum(['SD', 'DD', 'BD']),
+})
+
+export type NextBusSchema = z.infer<typeof nextBusSchema>

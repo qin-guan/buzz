@@ -47,15 +47,9 @@ useIntervalFn(refresh, 2000)
             </div>
           </div>
           <div class="flex flex-col">
-            <span>
-              In {{ $dayjs(service?.NextBus?.EstimatedArrival!).toNow() }}
-            </span>
-            <span>
-              In {{ $dayjs(service?.NextBus2?.EstimatedArrival!).toNow() }}
-            </span>
-            <span>
-              In {{ $dayjs(service?.NextBus3?.EstimatedArrival!).toNow() }}
-            </span>
+            <BusArrivalCard :estimated-arrival="service?.NextBus?.EstimatedArrival" />
+            <BusArrivalCard :estimated-arrival="service?.NextBus?.EstimatedArrival" />
+            <BusArrivalCard :estimated-arrival="service?.NextBus?.EstimatedArrival" />
           </div>
         </div>
       </div>

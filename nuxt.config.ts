@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   experimental: {
     headNext: true,
+    componentIslands: true,
   },
 
   devtools: { enabled: true },
