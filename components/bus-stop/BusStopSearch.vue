@@ -3,7 +3,7 @@ import type { SearchResult } from 'minisearch'
 import type { BusStopSchema } from '~/shared/types/core'
 import { searchOptions } from '~/shared/minisearch'
 
-const { data: _busStops, isLoading, suspense } = useBusStops()
+const { data: _busStops } = useBusStops()
 
 const minisearch = useMiniSearch()
 
@@ -42,7 +42,7 @@ function withDistance(item: BusStopSchema) {
   return {
     ...item,
     distance: getDistance(
-      item.Latitude, item.Longitude,
+      item.latitude, item.longitude,
       coords.value.latitude, coords.value.longitude,
     ),
   }
@@ -53,7 +53,7 @@ function withinRadius(item: BusStopSchema) {
     return true
 
   return isWithinRadius(
-    item.Latitude, item.Longitude,
+    item.latitude, item.longitude,
     coords.value.latitude, coords.value.longitude,
   )
 }

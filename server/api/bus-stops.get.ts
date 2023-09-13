@@ -15,6 +15,7 @@ export default defineCachedEventHandler(async () => {
     while (true) {
       const { value } = await $fetch<BusStopRespone>('https://datamall-proxy.netlify.app/ltaodataservice/BusStops', {
         query: {
+          camel: true,
           $skip: data.length,
         },
         headers: {
@@ -29,17 +30,6 @@ export default defineCachedEventHandler(async () => {
     }
 
     await storage.setItem('all', data)
-
-    const textBuffer = new TextEncoder().encode(JSON.stringify(data))
-    const hashBuffer = await subtle.digest('SHA-1', textBuffer)
-    const hashArray = Array.from(new Uint8Array(hashBuffer))
-    const hash = hashArray
-      .map(item => item.toString(16).padStart(2, '0'))
-      .join('')
-
-    await storage.setMeta('all', {
-      checksum: hash,
-    })
 
     return data
   }

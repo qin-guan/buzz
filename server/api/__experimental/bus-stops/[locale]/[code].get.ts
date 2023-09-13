@@ -29,7 +29,7 @@ export default defineCachedEventHandler(async (event) => {
     return await storage.getItem(code)
 
   const allBusses = useStorage('cache/bus-stops')
-  const bus = (await allBusses.getItem<AllBusStops>('all'))?.find(x => x.BusStopCode === code)
+  const bus = (await allBusses.getItem<AllBusStops>('all'))?.find(x => x.busStopCode === code)
   if (!bus) {
     throw createError({
       statusCode: 400,
@@ -47,7 +47,7 @@ export default defineCachedEventHandler(async (event) => {
     },
     body: {
       source_lang: 'EN',
-      text: [bus.Description],
+      text: [bus.description],
       target_lang: localizationMap[locale],
     },
   })

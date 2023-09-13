@@ -3,10 +3,36 @@ const localePath = useLocalePath()
 const route = useRoute()
 
 const { data: busStop, pending: busStopPending, error } = await useBusStop(route.params.code as string)
-
-const { data, refresh } = await useBusStopArrivals(route.params.code as string)
+const { data: arrivals, pending: arrivalsPending, refresh } = await useBusStopArrivals(route.params.code as string)
 
 useIntervalFn(refresh, 2000)
+
+function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+  if (value === null || value === undefined)
+    return false
+  return true
+}
+
+const services = computed(() => {
+  if (!arrivals.value)
+    return []
+  return arrivals.value.services.map(service => ({
+    number: service.serviceNo,
+    arrivals: [
+      service.nextBus,
+      service.nextBus2,
+      service.nextBus3,
+    ]
+      .filter(notEmpty)
+      .map(next => ({
+        time: next?.estimatedArrival,
+        longitude: next?.longitude,
+        latitude: next?.latitude,
+        load: next?.load,
+        type: next?.type,
+      })),
+  }))
+})
 </script>
 
 <template>
@@ -30,7 +56,7 @@ useIntervalFn(refresh, 2000)
             {{ $t('arrival.breadcrumb.busStop') }}
           </ElBreadcrumbItem>
           <ElBreadcrumbItem>
-            {{ busStop.Description }}
+            {{ busStop.description }}
           </ElBreadcrumbItem>
         </ElBreadcrumb>
 
@@ -38,20 +64,8 @@ useIntervalFn(refresh, 2000)
         <ElButton @click="refresh()">
           Refresh
         </ElButton>
-        <div v-for="service in data?.Services" :key="service?.ServiceNo" class="flex">
-          <div>
-            <div class="rounded-md bg-blue-700 bg-opacity-20 text-blue-500 p-3">
-              <span class="font-semibold">
-                {{ service?.ServiceNo }}
-              </span>
-            </div>
-          </div>
-          <div class="flex flex-col">
-            <BusArrivalCard :estimated-arrival="service?.NextBus?.EstimatedArrival" />
-            <BusArrivalCard :estimated-arrival="service?.NextBus?.EstimatedArrival" />
-            <BusArrivalCard :estimated-arrival="service?.NextBus?.EstimatedArrival" />
-          </div>
-        </div>
+
+        <BusArrivalTrack :services="services" />
       </div>
     </ElMain>
   </ElContainer>

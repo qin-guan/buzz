@@ -52,9 +52,9 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
         >
           <BusStopCard
             v-bind="{
-              busStopCode: props.busStops[index].BusStopCode,
-              description: props.busStops[index].Description,
-              roadName: props.busStops[index].RoadName,
+              busStopCode: props.busStops[index].busStopCode,
+              description: props.busStops[index].description,
+              roadName: props.busStops[index].roadName,
               distance: props.busStops[index].distance,
             }"
           />

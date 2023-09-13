@@ -9,7 +9,7 @@ export function useBusStop(code: MaybeRef<string>) {
     const { data: busStops, error } = await useBusStops()
     if (error.value)
       throw error.value
-    return busStops.value!.find(busStop => busStop.BusStopCode === code)
+    return busStops.value!.find(busStop => busStop.busStopCode === code)
   }, { watch, lazy: true })
 }
 
