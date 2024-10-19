@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   experimental: {
     headNext: true,
+    componentIslands: true,
   },
 
   devtools: { enabled: true },
@@ -32,7 +33,7 @@ export default defineNuxtConfig({
     devStorage: {
       cache: {
         driver: 'fsLite',
-        base: './tmp',
+        base: '.nuxt/cache',
       },
     },
   },

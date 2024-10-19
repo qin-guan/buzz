@@ -16,7 +16,7 @@ const busStopTranslation = z.object({
   description: z.string(),
 })
 
-export type BusStopTranslationStorageSchema = z.infer<typeof busStopTranslation>
+export type BusStopTranslation = z.infer<typeof busStopTranslation>
 
 /**
  * List of proposed translations for a bus stop stored in cache.

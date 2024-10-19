@@ -4,9 +4,15 @@ export default defineI18nConfig(() => ({
   messages: {
     'en-GB': {
       appName: 'Buzz',
-      busStops: {
+      busStop: {
         searchBar: 'Search for bus stop codes, names, or roads',
         distance: '{distance}m',
+        empty: 'No bus stops found',
+      },
+      arrival: {
+        breadcrumb: {
+          busStop: 'Bus Stops',
+        },
       },
       appHeader: {
         geolocation: {
@@ -17,9 +23,15 @@ export default defineI18nConfig(() => ({
     },
     'zh-CN': {
       appName: '巴士',
-      busStops: {
+      busStop: {
         searchBar: '搜索巴士站编号、名称或路名',
         distance: '{distance}米',
+        empty: '没有找到巴士站',
+      },
+      arrival: {
+        breadcrumb: {
+          busStop: '巴士站',
+        },
       },
       appHeader: {
         geolocation: {

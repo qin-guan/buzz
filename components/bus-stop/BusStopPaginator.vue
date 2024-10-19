@@ -27,7 +27,12 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
 
 <template>
   <div ref="scrollRef" class="overflow-y-auto h-full pt-4">
+    <div v-if="props.busStops.length === 0">
+      <LazyElEmpty :description="$t('busStop.empty')" />
+    </div>
+
     <div
+      v-else
       :style="{
         height: `${rowVirtualizer.getTotalSize()}px`,
         width: '100%',
@@ -47,9 +52,9 @@ const virtualItems = computed(() => rowVirtualizer.value.getVirtualItems())
         >
           <BusStopCard
             v-bind="{
-              busStopCode: props.busStops[index].BusStopCode,
-              description: props.busStops[index].Description,
-              roadName: props.busStops[index].RoadName,
+              busStopCode: props.busStops[index].busStopCode,
+              description: props.busStops[index].description,
+              roadName: props.busStops[index].roadName,
               distance: props.busStops[index].distance,
             }"
           />

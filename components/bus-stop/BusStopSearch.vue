@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { SearchResult } from 'minisearch'
-import { searchOptions } from '~/shared/minisearch'
 import type { BusStopSchema } from '~/shared/types/core'
+import { searchOptions } from '~/shared/minisearch'
 
-const app = useNuxtApp()
+const { data: _busStops } = useBusStops()
+
+const minisearch = useMiniSearch()
 
 const search = ref('')
 const searchThrottled = throttledRef(search, 200)
@@ -18,18 +20,18 @@ type ProperSearchResult = SearchResult & BusStopSchema
 
 const busStops = computed(() => {
   if (searchThrottled.value.length > 0) { // Manual search
-    return (app.$minisearch.search(searchThrottled.value, searchOptions) as ProperSearchResult[])
+    if (!minisearch.value)
+      return []
+
+    return (minisearch.value.search(searchThrottled.value, searchOptions) as ProperSearchResult[])
       .map(withDistance)
   }
 
   if (locatedAt.value) { // No search, show within goelocation radius
-    return app.$data.busStops
-      .filter(withinRadius)
-      .map(withDistance)
-      .sort(byDistance)
+    return _busStops.value?.filter(withinRadius).map(withDistance).sort(byDistance)
   }
 
-  return app.$data.busStops
+  return _busStops.value
 })
 
 // Helper functions
@@ -40,7 +42,7 @@ function withDistance(item: BusStopSchema) {
   return {
     ...item,
     distance: getDistance(
-      item.Latitude, item.Longitude,
+      item.latitude, item.longitude,
       coords.value.latitude, coords.value.longitude,
     ),
   }
@@ -51,7 +53,7 @@ function withinRadius(item: BusStopSchema) {
     return true
 
   return isWithinRadius(
-    item.Latitude, item.Longitude,
+    item.latitude, item.longitude,
     coords.value.latitude, coords.value.longitude,
   )
 }
@@ -66,9 +68,9 @@ function byDistance(a: BusStopWithDistance, b: BusStopWithDistance) {
 <template>
   <div class="h-full flex flex-col">
     <div class="mx-4">
-      <ElInput v-model="search" clearable size="large" :placeholder="$t('busStops.searchBar')" />
+      <ElInput v-model="search" clearable size="large" :placeholder="$t('busStop.searchBar')" />
     </div>
 
-    <BusStopPaginator :bus-stops="busStops" />
+    <BusStopPaginator :bus-stops="busStops ?? []" />
   </div>
 </template>

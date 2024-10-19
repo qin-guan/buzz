@@ -1,3 +1,4 @@
+import { subtle } from 'node:crypto'
 import type { BusStopRespone } from '~/shared/types/datamall'
 import type { AllBusStops } from '~/shared/types/storage'
 
@@ -14,6 +15,7 @@ export default defineCachedEventHandler(async () => {
     while (true) {
       const { value } = await $fetch<BusStopRespone>('https://datamall-proxy.netlify.app/ltaodataservice/BusStops', {
         query: {
+          camel: true,
           $skip: data.length,
         },
         headers: {
@@ -28,7 +30,6 @@ export default defineCachedEventHandler(async () => {
     }
 
     await storage.setItem('all', data)
-    await storage.setMeta('all', { length: data.length })
 
     return data
   }

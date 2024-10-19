@@ -26,9 +26,12 @@
     "element-plus": "^2.3.12",
     "eslint": "^8.48.0",
     "minisearch": "^6.1.0",
-    "nuxt": "^3.7.0",
+    "nuxt": "^3.7.1",
     "nuxt-icon": "^0.5.0",
     "vue-tsc": "^1.8.8",
     "zod": "^3.22.2"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.9"
   }
 }
