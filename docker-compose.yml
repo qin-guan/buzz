@@ -1,6 +1,0 @@
-﻿services:
-  buzz.webapp:
-    image: buzz.webapp
-    build:
-      context: .
-      dockerfile: Buzz.WebApp/Dockerfile
