@@ -1,0 +1,6 @@
+﻿services:
+  buzz.webapi:
+    image: buzz.webapi
+    build:
+      context: .
+      dockerfile: Buzz.WebApi/Dockerfile
