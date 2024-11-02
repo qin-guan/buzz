@@ -3,11 +3,9 @@ import { f7Page, f7Navbar, f7List, f7ListItem, f7Subnavbar, f7Searchbar } from '
 import MiniSearch from 'minisearch'
 import type { BusStop } from '~/api/app/models'
 
-const config = useRuntimeConfig()
-const { data: minisearchIndex, status: minisearchIndexStatus } = useFetch<string>(config.public.api + '/ms')
-const { data: busStops, status: busStopsStatus } = useFetch<BusStop[]>(config.public.api + '/bus-stops')
+const { data: busStops, status: busStopsStatus } = useBusStops()
+const { data: minisearchIndex, status: minisearchIndexStatus } = useMiniSearchIndex()
 
-const input = ref('')
 const vlData = ref({ items: [] as (BusStop & { index: number })[], topPosition: 0 })
 
 const minisearch = computed(() => {
@@ -57,14 +55,13 @@ function searchAll(query: string, items: BusStop[]) {
       outline-ios
       inset-md
       dividers-ios
-      class="searchbar-found"
       medial-list
       virtual-list
       :virtual-list-params="{
         items: busStops,
         searchAll,
         renderExternal,
-        height: 80,
+        height: 69,
       }"
     >
       <ul>

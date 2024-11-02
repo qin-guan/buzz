@@ -6,18 +6,18 @@ import 'material-icons/iconfont/material-icons.css'
 import Framework7 from 'framework7/lite-bundle'
 import Framework7Vue, { f7App, f7Views, f7View, f7Link, f7Toolbar } from 'framework7-vue/bundle'
 
+import StopPage from '~/components/stops/[code]/page.vue'
+
 Framework7.use(Framework7Vue)
 
 const routes = [
   {
-    name: 'home',
     path: '/',
   },
   {
-    name: 'stopByCode',
     path: '/stops/:code',
-    component: () => import('~/components/stops/[code]/page.vue'),
-  }
+    component: StopPage,
+  },
 ]
 </script>
 
@@ -25,9 +25,11 @@ const routes = [
   <f7App
     name="Buzz"
     theme="md"
+    :routes="routes"
   >
     <f7Views
       tabs
+      url="/"
       class="safe-areas"
       :master-detail-breakpoint="768"
       ios-swipe-back
