@@ -5,9 +5,9 @@
 import { type BaseRequestBuilder, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
 
 /**
- * Builds and executes requests for operations under /ms
+ * Builds and executes requests for operations under /MiniSearch
  */
-export interface MsRequestBuilder extends BaseRequestBuilder<MsRequestBuilder> {
+export interface MiniSearchRequestBuilder extends BaseRequestBuilder<MiniSearchRequestBuilder> {
     /**
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<ArrayBuffer>}
@@ -22,13 +22,13 @@ export interface MsRequestBuilder extends BaseRequestBuilder<MsRequestBuilder> {
 /**
  * Uri template for the request builder.
  */
-export const MsRequestBuilderUriTemplate = "{+baseurl}/ms";
+export const MiniSearchRequestBuilderUriTemplate = "{+baseurl}/MiniSearch";
 /**
  * Metadata for all the requests in the request builder.
  */
-export const MsRequestBuilderRequestsMetadata: RequestsMetadata = {
+export const MiniSearchRequestBuilderRequestsMetadata: RequestsMetadata = {
     get: {
-        uriTemplate: MsRequestBuilderUriTemplate,
+        uriTemplate: MiniSearchRequestBuilderUriTemplate,
         adapterMethodName: "sendPrimitive",
         responseBodyFactory:  "ArrayBuffer",
     },

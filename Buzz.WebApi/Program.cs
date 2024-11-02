@@ -30,11 +30,17 @@ app.UseCors();
 
 app.MapOpenApi();
 
-app.MapGet("/ms",
+app.MapGet("/MiniSearch",
     async (CancellationToken ct, MiniSearchService service) =>
         TypedResults.Text(await service.GetMiniSearchIndexAsync(ct))
 );
 
-app.MapGet("/bus-stops", async (CancellationToken ct, DataMallService service) => await service.GetBusStopsAsync(ct));
+app.MapGet("/BusStops", async (CancellationToken ct, DataMallService service) => await service.GetBusStopsAsync(ct));
+
+app.MapGet(
+    "/BusStops/{Code}/Services",
+    async (CancellationToken ct, DataMallService service, string code) =>
+        await service.GetBusServicesForStopAsync(code, ct)
+);
 
 app.Run();

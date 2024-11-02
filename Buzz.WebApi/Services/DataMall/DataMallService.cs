@@ -20,6 +20,30 @@ public class DataMallService
         _httpClient.DefaultRequestHeaders.Add("AccountKey", options.Value.ApiKey);
     }
 
+    public async Task<List<BusService>> GetBusServicesForStopAsync(string code,
+        CancellationToken cancellationToken = default)
+    {
+        return await _cache.GetOrCreateAsync(
+            $"BusStops:{code}:Services",
+            async ct =>
+            {
+                var data = await _httpClient.GetFromJsonAsync<GetBusArrivalResponse>(
+                    $"/ltaodataservice/v3/BusArrival?BusStopCode={code}",
+                    cancellationToken: ct
+                );
+
+                ArgumentNullException.ThrowIfNull(data);
+
+                return data.Services.ToList();
+            },
+            cancellationToken: cancellationToken,
+            options: new HybridCacheEntryOptions
+            {
+                Expiration = TimeSpan.FromSeconds(45)
+            }
+        );
+    }
+
     public async Task<List<BusStop>> GetBusStopsAsync(CancellationToken cancellationToken = default)
     {
         return await _cache.GetOrCreateAsync(
