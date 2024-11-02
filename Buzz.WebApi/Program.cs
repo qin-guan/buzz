@@ -1,35 +1,40 @@
-using System.Text.Json.Serialization;
+using System.Text.Json;
+using Buzz.WebApi.Options;
+using Buzz.WebApi.Services.DataMall;
+using Buzz.WebApi.Services.MiniSearch;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
-builder.Services.ConfigureHttpJsonOptions(options =>
+builder.Services.AddOpenApi();
+
+builder.Services.AddOptions<DataMallOptions>()
+    .Bind(builder.Configuration.GetSection("DataMall"));
+
+builder.Services.AddHttpClient<DataMallService>();
+
+#pragma warning disable EXTEXP0018
+builder.Services.AddHybridCache(options =>
 {
-    options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
+    options.MaximumPayloadBytes = 100 * 1024 * 1024; // 100MB
 });
+#pragma warning restore EXTEXP0018
+
+builder.Services.AddCors(options => { options.AddDefaultPolicy(policy => { policy.AllowAnyOrigin(); }); });
+
+builder.Services.AddSingleton<DataMallService>();
+builder.Services.AddSingleton<MiniSearchService>();
 
 var app = builder.Build();
 
-var sampleTodos = new Todo[]
-{
-    new(1, "Walk the dog"),
-    new(2, "Do the dishes", DateOnly.FromDateTime(DateTime.Now)),
-    new(3, "Do the laundry", DateOnly.FromDateTime(DateTime.Now.AddDays(1))),
-    new(4, "Clean the bathroom"),
-    new(5, "Clean the car", DateOnly.FromDateTime(DateTime.Now.AddDays(2)))
-};
+app.UseCors();
 
-var todosApi = app.MapGroup("/todos");
-todosApi.MapGet("/", () => sampleTodos);
-todosApi.MapGet("/{id}", (int id) =>
-    sampleTodos.FirstOrDefault(a => a.Id == id) is { } todo
-        ? Results.Ok(todo)
-        : Results.NotFound());
+app.MapOpenApi();
+
+app.MapGet("/ms",
+    async (CancellationToken ct, MiniSearchService service) =>
+        TypedResults.Text(await service.GetMiniSearchIndexAsync(ct))
+);
+
+app.MapGet("/bus-stops", async (CancellationToken ct, DataMallService service) => await service.GetBusStopsAsync(ct));
 
 app.Run();
-
-public record Todo(int Id, string? Title, DateOnly? DueBy = null, bool IsComplete = false);
-
-[JsonSerializable(typeof(Todo[]))]
-internal partial class AppJsonSerializerContext : JsonSerializerContext
-{
-}

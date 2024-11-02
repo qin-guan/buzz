@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "@buzz/app",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,11 +7,23 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@nuxt/eslint": "^0.6.1",
+    "framework7": "^8.3.4",
+    "framework7-icons": "^5.0.5",
+    "framework7-vue": "^8.3.4",
+    "material-icons": "^1.13.12",
+    "minisearch": "^7.1.0",
     "nuxt": "^3.13.2",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "execa": "^9.5.1",
+    "typescript": "^5.6.3"
   }
 }
