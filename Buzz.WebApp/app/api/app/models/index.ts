@@ -81,6 +81,14 @@ export function createNextBusFromDiscriminatorValue(parseNode: ParseNode | undef
     return deserializeIntoNextBus;
 }
 /**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {TrainStationCrowd}
+ */
+export function createTrainStationCrowdFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoTrainStationCrowd;
+}
+/**
  * The deserialization information for the current model
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -122,6 +130,18 @@ export function deserializeIntoNextBus(nextBus: Partial<NextBus> | undefined = {
         "originCode": n => { nextBus.originCode = n.getStringValue(); },
         "type": n => { nextBus.type = n.getStringValue(); },
         "visitNumber": n => { nextBus.visitNumber = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+export function deserializeIntoTrainStationCrowd(trainStationCrowd: Partial<TrainStationCrowd> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "code": n => { trainStationCrowd.code = n.getStringValue(); },
+        "crowdLevel": n => { trainStationCrowd.crowdLevel = n.getStringValue(); },
+        "endTime": n => { trainStationCrowd.endTime = n.getStringValue(); },
+        "startTime": n => { trainStationCrowd.startTime = n.getStringValue(); },
     }
 }
 export interface NextBus extends AdditionalDataHolder, Parsable {
@@ -210,6 +230,39 @@ export function serializeNextBus(writer: SerializationWriter, nextBus: Partial<N
     writer.writeStringValue("type", nextBus.type);
     writer.writeStringValue("visitNumber", nextBus.visitNumber);
     writer.writeAdditionalData(nextBus.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param writer Serialization writer to use to serialize this model
+ */
+export function serializeTrainStationCrowd(writer: SerializationWriter, trainStationCrowd: Partial<TrainStationCrowd> | undefined = {}) : void {
+    writer.writeStringValue("code", trainStationCrowd.code);
+    writer.writeStringValue("crowdLevel", trainStationCrowd.crowdLevel);
+    writer.writeStringValue("endTime", trainStationCrowd.endTime);
+    writer.writeStringValue("startTime", trainStationCrowd.startTime);
+    writer.writeAdditionalData(trainStationCrowd.additionalData);
+}
+export interface TrainStationCrowd extends AdditionalDataHolder, Parsable {
+    /**
+     * Stores additional data not described in the OpenAPI description found when deserializing. Can be used for serialization as well.
+     */
+    additionalData?: Record<string, unknown>;
+    /**
+     * The code property
+     */
+    code?: string;
+    /**
+     * The crowdLevel property
+     */
+    crowdLevel?: string;
+    /**
+     * The endTime property
+     */
+    endTime?: string;
+    /**
+     * The startTime property
+     */
+    startTime?: string;
 }
 /* tslint:enable */
 /* eslint-enable */

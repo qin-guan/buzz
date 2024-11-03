@@ -20,6 +20,40 @@ public class DataMallService
         _httpClient.DefaultRequestHeaders.Add("AccountKey", options.Value.ApiKey);
     }
 
+    public async Task<List<TrainStationCrowd>> GetTrainStationCrowd(
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _cache.GetOrCreateAsync(
+            $"Station",
+            async ct =>
+            {
+                var stations = new List<TrainStationCrowd>();
+
+                foreach (var line in Enum.GetNames(typeof(TrainLine)))
+                {
+                    var items = await _httpClient.GetFromJsonAsync<GetTrainStationCrowdResponse>(
+                        $"/ltaodataservice/PCDRealTime?TrainLine={line.ToUpper()}",
+                        cancellationToken: ct
+                    );
+
+                    ArgumentNullException.ThrowIfNull(items);
+
+                    stations.AddRange(items.Values.Select(v =>
+                        new TrainStationCrowd(v.Station, v.StartTime, v.EndTime, v.CrowdLevel))
+                    );
+                }
+
+                return stations;
+            },
+            cancellationToken: cancellationToken,
+            options: new HybridCacheEntryOptions
+            {
+                Expiration = TimeSpan.FromSeconds(45)
+            }
+        );
+    }
+
     public async Task<List<BusService>> GetBusServicesForStopAsync(string code,
         CancellationToken cancellationToken = default)
     {

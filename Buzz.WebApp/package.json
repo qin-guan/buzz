@@ -13,6 +13,8 @@
   },
   "dependencies": {
     "@nuxt/eslint": "^0.6.1",
+    "@vueuse/core": "^11.2.0",
+    "@vueuse/nuxt": "^11.2.0",
     "dayjs": "^1.11.13",
     "framework7": "^8.3.4",
     "framework7-icons": "^5.0.5",

@@ -8,7 +8,9 @@ const props = defineProps<{
 const dayjs = useDayjs()
 
 const { data: busStops } = useBusStops()
-const { data: services } = useBusStopServices(props.code)
+const { data: services, refresh } = useBusStopServices(props.code)
+
+useIntervalFn(refresh, 5000)
 
 const busStop = computed(() => busStops.value?.find(busStop => busStop.code === props.code))
 

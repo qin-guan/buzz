@@ -6,6 +6,8 @@ import { BusStopsRequestBuilderNavigationMetadata, BusStopsRequestBuilderRequest
 // @ts-ignore
 import { MiniSearchRequestBuilderRequestsMetadata, type MiniSearchRequestBuilder } from './miniSearch/';
 // @ts-ignore
+import { StationsRequestBuilderRequestsMetadata, type StationsRequestBuilder } from './stations/';
+// @ts-ignore
 import { apiClientProxifier, registerDefaultDeserializer, registerDefaultSerializer, type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type RequestAdapter } from '@microsoft/kiota-abstractions';
 // @ts-ignore
 import { FormParseNodeFactory, FormSerializationWriterFactory } from '@microsoft/kiota-serialization-form';
@@ -28,6 +30,10 @@ export interface ApiClient extends BaseRequestBuilder<ApiClient> {
      * The MiniSearch property
      */
     get miniSearch(): MiniSearchRequestBuilder;
+    /**
+     * The Stations property
+     */
+    get stations(): StationsRequestBuilder;
 }
 /**
  * Instantiates a new {@link ApiClient} and sets the default values.
@@ -42,7 +48,7 @@ export function createApiClient(requestAdapter: RequestAdapter) {
     registerDefaultDeserializer(TextParseNodeFactory);
     registerDefaultDeserializer(FormParseNodeFactory);
     if (requestAdapter.baseUrl === undefined || requestAdapter.baseUrl === "") {
-        requestAdapter.baseUrl = "http://localhost:33951";
+        requestAdapter.baseUrl = "http://localhost:35269";
     }
     const pathParameters: Record<string, unknown> = {
         "baseurl": requestAdapter.baseUrl,
@@ -63,6 +69,9 @@ export const ApiClientNavigationMetadata: Record<Exclude<keyof ApiClient, KeysTo
     },
     miniSearch: {
         requestsMetadata: MiniSearchRequestBuilderRequestsMetadata,
+    },
+    stations: {
+        requestsMetadata: StationsRequestBuilderRequestsMetadata,
     },
 };
 /* tslint:enable */

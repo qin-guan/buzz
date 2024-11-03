@@ -1,6 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/eslint'],
+  modules: [
+    '@nuxt/eslint', 
+    '@vueuse/nuxt',
+  ],
+
   ssr: true,
 
   devtools: { enabled: true },

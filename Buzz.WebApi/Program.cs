@@ -43,4 +43,10 @@ app.MapGet(
         await service.GetBusServicesForStopAsync(code, ct)
 );
 
+app.MapGet(
+    "/Stations",
+    async (CancellationToken ct, DataMallService service) =>
+        await service.GetTrainStationCrowd(ct)
+);
+
 app.Run();
